@@ -1,0 +1,4 @@
+# Normalize to LF; Go tooling and gofmt expect it.
+* text=auto eol=lf
+# PowerShell is Windows-native — keep CRLF.
+*.ps1 text eol=crlf

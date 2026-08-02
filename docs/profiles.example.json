@@ -1,0 +1,65 @@
+[
+  {
+    "name": "Chrome",
+    "family": "chrome",
+    "ja4_prefix": "t13d1516h2",
+    "ja4_cipher_hash": "8daaf6152771",
+    "akamai_h2": "1:65536;2:0;4:6291456;6:262144|15663105|0|m,a,s,p",
+    "pseudo_order": "m,a,s,p",
+    "expects_mlkem": true,
+    "expects_alps": true,
+    "expects_grease": true,
+    "ua_tokens": [
+      "Chrome/"
+    ],
+    "captured_on": "2026-07-29",
+    "versions": "Chrome 149–151 (Windows)"
+  },
+  {
+    "name": "Edge",
+    "family": "edge",
+    "ja4_prefix": "t13d1516h2",
+    "ja4_cipher_hash": "8daaf6152771",
+    "akamai_h2": "1:65536;2:0;4:6291456;6:262144|15663105|0|m,a,s,p",
+    "pseudo_order": "m,a,s,p",
+    "expects_mlkem": true,
+    "expects_alps": true,
+    "expects_grease": true,
+    "ua_tokens": [
+      "Edg/"
+    ],
+    "captured_on": "2026-07-29",
+    "versions": "Edge 150 (Windows)"
+  },
+  {
+    "name": "Firefox",
+    "family": "firefox",
+    "ja4_prefix": "t13d1617h2",
+    "ja4_cipher_hash": "86a278354501",
+    "akamai_h2": "1:65536;2:0;4:131072;5:16384|12517377|3:0:0:42|m,p,a,s",
+    "pseudo_order": "m,p,a,s",
+    "expects_mlkem": true,
+    "expects_alps": false,
+    "expects_grease": false,
+    "ua_tokens": [
+      "Firefox/"
+    ],
+    "captured_on": "2026-07-29",
+    "versions": "Firefox 153 / Gecko 141 (Windows)"
+  },
+  {
+    "name": "Safari",
+    "family": "safari",
+    "ja4_prefix": "t13d1517h2",
+    "ja4_cipher_hash": "a09f3c656075",
+    "akamai_h2": "2:0;4:4194304;3:100|10485760|0|m,s,p,a",
+    "pseudo_order": "m,s,p,a",
+    "expects_mlkem": true,
+    "expects_alps": false,
+    "expects_grease": true,
+    "ua_tokens": [
+      "Version/"
+    ],
+    "versions": "Safari 26 (assumed, not captured)"
+  }
+]

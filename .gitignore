@@ -1,0 +1,22 @@
+spoofprint
+collector
+collector.exe
+proxy
+proxy.exe
+/dist
+/bin
+*.out
+*.log
+*.pem
+
+# local-only scratch
+TELEGRAM_POST.md
+TEST_COMMANDS.md
+PRE_PUSH_CHECKLIST.md
+notes.md
+scratch/
+
+.idea/
+.vscode/
+.DS_Store
+*.exe

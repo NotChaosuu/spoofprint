@@ -1,0 +1,12 @@
+{
+  "ja4": "t13d1617h2_86a278354501_3cbfd9057e0d",
+  "ja4h": "ge20nn020000_fb4f949fd323_000000000000_000000000000",
+  "akamai_h2": "1:65536;2:0;4:131072;5:16384|12517377|3:0:0:42|m,p,a,s",
+  "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0",
+  "http_version": "2",
+  "alpn": ["h2", "http/1.1"],
+  "pseudo_order": "m,p,a,s",
+  "grease_present": false,
+  "has_mlkem": true,
+  "has_alps": false
+}
