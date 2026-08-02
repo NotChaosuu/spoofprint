@@ -114,4 +114,4 @@ MIT
 
 ## Author
 
-Chaosuu — t.me/chaosuudev. More tools at github.com/NotChaosuu.
+Chaosuu — t.me/chaosuudev. 
