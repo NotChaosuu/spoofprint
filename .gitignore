@@ -1,8 +1,8 @@
-spoofprint
-collector
-collector.exe
-proxy
-proxy.exe
+/spoofprint
+/collector
+/collector.exe
+/proxy
+/proxy.exe
 /dist
 /bin
 *.out
