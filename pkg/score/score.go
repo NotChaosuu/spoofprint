@@ -15,7 +15,7 @@ const (
 
 func Score(fp model.Fingerprint) model.Verdict {
 	claimed := profiles.ClaimedBrowser(fp.UserAgent)
-	fpFam := profiles.FamilyFromJA4(fp.JA4)
+	fpFam := profiles.FamilyFromFingerprint(fp)
 
 	v := model.Verdict{
 		Fingerprint:    fp,
@@ -54,14 +54,16 @@ func Score(fp model.Fingerprint) model.Verdict {
 			"Claims a browser over TLS but no valid ClientHello could be parsed; a real browser always produces one (a fragmented or malformed hello reads as none).")
 	}
 
-	if hasProfile && fp.AkamaiH2 != "" && !h2Consistent(fp.AkamaiH2, claimedProfile.AkamaiH2, claimedProfile.CapturedOn != "") {
+	if hasProfile && fp.AkamaiH2 != "" && !h2MatchesProfile(fp.AkamaiH2, claimedProfile) {
 		add("h2-vs-ua", model.Medium,
 			"HTTP/2 fingerprint disagrees with "+claimedProfile.Name+"'s known values (a declared SETTING or the connection window differs, is missing, or the SETTINGS barely overlap).")
 	}
 
-	if hasProfile && fp.PseudoOrder != "" && fp.PseudoOrder != claimedProfile.PseudoOrder {
-		add("pseudo-order", model.High,
-			"HTTP/2 pseudo-header order "+fp.PseudoOrder+" does not match "+claimedProfile.Name+"'s ("+claimedProfile.PseudoOrder+").")
+	if hasProfile && fp.PseudoOrder != "" {
+		if orders := pseudoOrders(claimedProfile); !containsStr(orders, fp.PseudoOrder) {
+			add("pseudo-order", model.High,
+				"HTTP/2 pseudo-header order "+fp.PseudoOrder+" does not match "+claimedProfile.Name+"'s ("+strings.Join(orders, " or ")+").")
+		}
 	}
 
 	if hasProfile && claimedProfile.ExpectsGREASE && fp.JA4 != "" && !fp.GREASEPresent {
@@ -107,6 +109,34 @@ func Score(fp model.Fingerprint) model.Verdict {
 	v.SpoofScore = tally(v.Violations)
 	v.Label = label(v.SpoofScore)
 	return v
+}
+
+// h2MatchesProfile accepts the client's HTTP/2 opening if it is consistent with
+// the profile's main Akamai string or with any of its older-release
+// alternates.
+func h2MatchesProfile(observed string, p model.Profile) bool {
+	verified := p.CapturedOn != ""
+	if h2Consistent(observed, p.AkamaiH2, verified) {
+		return true
+	}
+	for _, alt := range p.AltAkamaiH2 {
+		if h2Consistent(observed, alt, verified) {
+			return true
+		}
+	}
+	return false
+}
+
+// pseudoOrders lists the pseudo-header orders a profile accepts: its own, then
+// the order field of each alternate Akamai string.
+func pseudoOrders(p model.Profile) []string {
+	out := []string{p.PseudoOrder}
+	for _, alt := range p.AltAkamaiH2 {
+		if o := field(fields(alt), 3); o != "" && !containsStr(out, o) {
+			out = append(out, o)
+		}
+	}
+	return out
 }
 
 // h2Consistent compares the Akamai HTTP/2 fingerprint against a profile on two

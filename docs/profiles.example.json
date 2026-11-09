@@ -4,6 +4,11 @@
     "family": "chrome",
     "ja4_prefix": "t13d1516h2",
     "ja4_cipher_hash": "8daaf6152771",
+    "ja4_ext_hashes": [
+      "d8a2da3f94cd",
+      "b6f405a00624",
+      "cb7bf5808d99"
+    ],
     "akamai_h2": "1:65536;2:0;4:6291456;6:262144|15663105|0|m,a,s,p",
     "pseudo_order": "m,a,s,p",
     "expects_mlkem": true,
@@ -20,6 +25,10 @@
     "family": "edge",
     "ja4_prefix": "t13d1516h2",
     "ja4_cipher_hash": "8daaf6152771",
+    "ja4_ext_hashes": [
+      "806a8c22fdea",
+      "a87ad97598a9"
+    ],
     "akamai_h2": "1:65536;2:0;4:6291456;6:262144|15663105|0|m,a,s,p",
     "pseudo_order": "m,a,s,p",
     "expects_mlkem": true,
@@ -36,6 +45,12 @@
     "family": "firefox",
     "ja4_prefix": "t13d1617h2",
     "ja4_cipher_hash": "86a278354501",
+    "alt_ja4_cipher_hashes": [
+      "8daaf6152771"
+    ],
+    "ja4_ext_hashes": [
+      "3cbfd9057e0d"
+    ],
     "akamai_h2": "1:65536;2:0;4:131072;5:16384|12517377|3:0:0:42|m,p,a,s",
     "pseudo_order": "m,p,a,s",
     "expects_mlkem": true,
@@ -45,21 +60,25 @@
       "Firefox/"
     ],
     "captured_on": "2026-07-29",
-    "versions": "Firefox 153 / Gecko 141 (Windows)"
+    "versions": "Firefox 153 / Gecko 141 (Windows); 154+ cipher list from its published JA4_r"
   },
   {
     "name": "Safari",
     "family": "safari",
-    "ja4_prefix": "t13d1517h2",
+    "ja4_prefix": "t13d2014h2",
     "ja4_cipher_hash": "a09f3c656075",
-    "akamai_h2": "2:0;4:4194304;3:100|10485760|0|m,s,p,a",
-    "pseudo_order": "m,s,p,a",
+    "akamai_h2": "2:0;3:100;4:2097152;9:1|10420225|0|m,s,a,p",
+    "alt_akamai_h2": [
+      "2:0;4:4194304;3:100|10485760|0|m,s,p,a",
+      "2:0;4:2097152;3:100|10485760|0|m,s,p,a"
+    ],
+    "pseudo_order": "m,s,a,p",
     "expects_mlkem": true,
     "expects_alps": false,
     "expects_grease": true,
     "ua_tokens": [
       "Version/"
     ],
-    "versions": "Safari 26 (assumed, not captured)"
+    "versions": "Safari 18–27 (from curl-impersonate signatures, not captured here); Safari 17 H2 accepted"
   }
 ]

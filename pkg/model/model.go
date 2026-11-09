@@ -31,8 +31,21 @@ type Profile struct {
 
 	JA4Prefix string `json:"ja4_prefix"`
 
-	JA4CipherHash string   `json:"ja4_cipher_hash"`
-	AkamaiH2      string   `json:"akamai_h2"`
+	JA4CipherHash string `json:"ja4_cipher_hash"`
+	// Other cipher hashes the same browser has shipped. Firefox 154 moved to
+	// Chrome's cipher list, so a Firefox profile has to know both the old and
+	// the new hash.
+	AltCipherHashes []string `json:"alt_ja4_cipher_hashes,omitempty"`
+	// Known JA4_c values (sorted extensions + signature algorithms). Only used to
+	// tell apart families that share a cipher hash; an unlisted value is normal
+	// after a browser update and is not held against the client.
+	JA4ExtHashes []string `json:"ja4_ext_hashes,omitempty"`
+
+	AkamaiH2 string `json:"akamai_h2"`
+	// Older releases of the same browser that are still in use and send a
+	// different HTTP/2 opening. Each is a full Akamai string; its pseudo-header
+	// order is accepted alongside PseudoOrder.
+	AltAkamaiH2   []string `json:"alt_akamai_h2,omitempty"`
 	PseudoOrder   string   `json:"pseudo_order"`
 	ExpectsMLKEM  bool     `json:"expects_mlkem"`
 	ExpectsALPS   bool     `json:"expects_alps"`

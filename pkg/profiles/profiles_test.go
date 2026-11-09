@@ -34,6 +34,49 @@ func TestFamilyFromJA4_Firefox(t *testing.T) {
 	}
 }
 
+// Firefox 154+ sends Chrome's exact cipher list, so JA4_b alone can't name the
+// family. FamilyFromJA4 settles it from a known JA4_c and otherwise says
+// Unknown instead of guessing Chrome.
+func TestFamilyFromJA4_SharedCipherHash(t *testing.T) {
+	cases := map[string]model.Family{
+		"t13d1517h2_8daaf6152771_3cbfd9057e0d": model.Firefox, // Firefox 154+
+		"t13d1517h2_8daaf6152771_cb7bf5808d99": model.Chrome,  // Chrome 152+
+		"t13d1517h2_8daaf6152771_aabbccddeeff": model.Unknown, // unlisted extensions
+		"t13d1617h2_86a278354501_000000000000": model.Firefox, // <=153 hash is Firefox's alone
+	}
+	for ja4, want := range cases {
+		if got := FamilyFromJA4(ja4); got != want {
+			t.Errorf("FamilyFromJA4(%s) = %s, want %s", ja4, got, want)
+		}
+	}
+}
+
+func TestFamilyFromFingerprint_ShapeBreaksSharedHash(t *testing.T) {
+	const unlisted = "t13d1517h2_8daaf6152771_aabbccddeeff"
+	cases := []struct {
+		name         string
+		alps, grease bool
+		want         model.Family
+	}{
+		{"chromium-shape", true, true, model.Chrome},
+		{"firefox-shape", false, false, model.Firefox},
+		{"alps-without-grease", true, false, model.Unknown},
+		{"grease-without-alps", false, true, model.Unknown},
+	}
+	for _, tc := range cases {
+		fp := model.Fingerprint{JA4: unlisted, HasALPS: tc.alps, GREASEPresent: tc.grease}
+		if got := FamilyFromFingerprint(fp); got != tc.want {
+			t.Errorf("%s: FamilyFromFingerprint = %s, want %s", tc.name, got, tc.want)
+		}
+	}
+	// A known JA4_c wins over the flags: Firefox's extension set with GREASE
+	// added is still not Chrome.
+	fp := model.Fingerprint{JA4: "t13d1517h2_8daaf6152771_3cbfd9057e0d", GREASEPresent: true}
+	if got := FamilyFromFingerprint(fp); got != model.Firefox {
+		t.Errorf("known Firefox JA4_c = %s, want firefox", got)
+	}
+}
+
 func TestFamilyFromJA4_UnknownCipherHash(t *testing.T) {
 	if got := FamilyFromJA4("t13d1516h2_ffffffffffff_000000000000"); got != model.Unknown {
 		t.Errorf("unknown cipher hash should be Unknown, got %q", got)

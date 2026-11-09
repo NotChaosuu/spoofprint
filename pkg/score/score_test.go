@@ -39,11 +39,11 @@ func realFirefox() model.Fingerprint {
 
 func realSafari() model.Fingerprint {
 	return model.Fingerprint{
-		JA4:           "t13d1517h2_a09f3c656075_14788d8d241b",
-		AkamaiH2:      "2:0;4:4194304;3:100|10485760|0|m,s,p,a",
-		UserAgent:     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15",
+		JA4:           "t13d2014h2_a09f3c656075_14788d8d241b",
+		AkamaiH2:      "2:0;3:100;4:2097152;9:1|10420225|0|m,s,a,p",
+		UserAgent:     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0.1 Safari/605.1.15",
 		HTTPVersion:   "2",
-		PseudoOrder:   "m,s,p,a",
+		PseudoOrder:   "m,s,a,p",
 		GREASEPresent: true,
 		HasMLKEM:      true,
 		HasALPS:       false,
@@ -360,7 +360,7 @@ func TestBrowserClaimWithNoParseableHelloFailsClosed(t *testing.T) {
 // SETTINGS, trips h2-vs-ua on a verified profile.
 func TestH2AbsentValuesFailClosedOnVerifiedProfile(t *testing.T) {
 	cases := map[string]string{
-		"window-omitted":  "1:65536;2:0;4:6291456;6:262144||0|m,a,s,p",
+		"window-omitted":   "1:65536;2:0;4:6291456;6:262144||0|m,a,s,p",
 		"one-setting-only": "1:65536|15663105|0|m,a,s,p",
 	}
 	for name, h2 := range cases {
@@ -379,7 +379,7 @@ func TestH2AbsentValuesLenientOnAssumedSafari(t *testing.T) {
 		t.Skip("Safari profile is now captured; this gate no longer applies")
 	}
 	fp := realSafari()
-	fp.AkamaiH2 = "2:0;4:4194304;3:100||0|m,s,p,a" // window omitted
+	fp.AkamaiH2 = "2:0;3:100;4:2097152;9:1||0|m,s,a,p" // window omitted
 	if v := Score(fp); hasRule(v, "h2-vs-ua") {
 		t.Errorf("an assumed profile must stay lenient on absent values, got %+v", v.Violations)
 	}
